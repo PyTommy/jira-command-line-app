@@ -11,7 +11,7 @@ pub struct SearchIssuesResult {
     start_at: i32,
     max_results: i32,
     total: i32,
-    issues: Vec<Issue>,
+    pub issues: Vec<Issue>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -19,13 +19,14 @@ pub struct SearchIssuesResult {
 pub struct Issue {
   expand: String,
   id: String,
-  fields: IssueFields,
+  pub key: String,
+  pub fields: IssueFields,
 }
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct IssueFields {
-    summary: String,
+    pub summary: String,
 }
 
 pub async fn list() -> Result<SearchIssuesResult, Box<dyn Error>> {

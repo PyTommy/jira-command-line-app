@@ -22,9 +22,10 @@ async fn main() {
 
     match &cli.command {
         Some(Commands::Issues) => {
-            print!("issues");
-            let body = jira::list().await.expect("failed get_Issues");
-            println!("body = {:?}", serde_json::to_string_pretty(&body).unwrap());
+            let result = jira::list().await.expect("failed get_Issues");
+            for issue in result.issues {
+              println!("[{}] {}", issue.key, issue.fields.summary);
+            }
         } 
         None => { 
             println!("no command privided for j")
