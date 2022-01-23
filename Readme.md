@@ -18,10 +18,27 @@ chmod +x /Users/taroyamada/dev/jira-command-line-app/local/j-1.0.0-osx // 例
 
 3. zsh 修正(Mac)
 
-```sh
+```
+# open ~/.zshrc
 export JIRA_BASE_URL="https://xxxxx.atlassian.net" # JiraのURL
 export JIRA_AUTH=<email>:<API_token> # API Token発行はこちら: https://id.atlassian.com/manage-profile/security/api-tokens
 alias j=/Users/taroyamada/dev/jira-command-line-app/local/j-1.0.0-osx # binaryファイルのパス
+```
+
+```sh
+source ~/.zshrc
+```
+
+4. 実行
+
+```sh
+j --help
+
+# 自分に割り当てられたIssueを複数選択し、issueリストをmarkdownで吐き出せるよ
+j issues
+
+# 自分に割り当てられたIssueを選択し、issue番号をcommitタイトルに付けてくれるよ
+j commit
 ```
 
 ## 開発の仕方
