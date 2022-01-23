@@ -34,10 +34,10 @@ source ~/.zshrc
 ```sh
 j --help
 
-# 自分に割り当てられたIssueを複数選択し、issueリストをmarkdownで吐き出せるよ
+# 担当者=me & inアクティブスプリントのIssueを複数選択し、markdownで吐き出す
 j issues
 
-# 自分に割り当てられたIssueを選択し、issue番号をcommitタイトルに付けてくれるよ
+# 担当者=me & inアクティブスプリントのIssueを選択し、issue番号とともに`git commit`
 j commit
 ```
 

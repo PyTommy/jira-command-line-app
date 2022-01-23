@@ -3,6 +3,7 @@ use std::{env, error::Error};
 use reqwest::{self, header};
 use base64::{encode};
 use serde_json::{self};
+use urlencoding;
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SearchIssuesResult {
@@ -54,8 +55,15 @@ pub struct IssueType {
 // Public
 // =========
 pub async fn list() -> Result<SearchIssuesResult, Box<dyn Error>> {
+  let mut vec_jql = vec![];
+  vec_jql.push(jql_assignee_equal_currentuser());
+  vec_jql.push(jql_current_sprint());
+
+  let jql = vec_jql.join(" and ");
+  let encoded_jql = urlencoding::encode(&jql);
+  
   let url = generate_base_url()?
-    .join(&format!("/rest/api/3/search?jql={}", jql_assignee_equal_currentuser()))?;
+    .join(&format!("/rest/api/3/search?jql={}", encoded_jql))?;
 
   let result: String = client()?
     .get(url)
@@ -74,6 +82,9 @@ pub async fn list() -> Result<SearchIssuesResult, Box<dyn Error>> {
 // ===========
 fn jql_assignee_equal_currentuser() -> String {
   return String::from("assignee=currentuser()");
+}
+fn jql_current_sprint() -> String {
+  return String::from("sprint in openSprints()");
 }
 
 fn client() -> Result<reqwest::Client, Box<dyn Error>> {  
