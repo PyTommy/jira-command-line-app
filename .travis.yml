@@ -1,0 +1,29 @@
+language: rust
+rust:
+  - stable
+  - beta
+  - nightly
+matrix:
+  allow_failures:
+  - rust: nightly
+  fast_finish: true
+os:
+- linux
+- osx
+deploy:
+  privider: cargo
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: "$TRAVIS_RUST_VERSION = stable && $TRAVIS_OS_NAME = linux"
+    branch: main
+deploy:
+  - provider: releases
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: "$TRAVIS_RUST_VERSION = stable"
+      branch: master
+    file: target/release/j
+    api_token:
+      secure: A4YBO6T56A9YcbgL7RULrneuLxt9jbDO3zz3GhXnjkuhad8pGUQ5SkdfjsEOhUw2rYmKGdy53iZctzGcrK2Z/n1bbzWBmIxNY5jsrbnZBbVknc94NSr7kSX7yFnd5BLCyje7tO9C1xhP3QafOrnDbOpQV+HTnnHOMxBaIdc5CWD4gbND1DcxvNAciwVhgF6XFUdEjz318eaB0wWgDtq3jsD2pryFk1fDMpUWIsm70TYmlL+WgHIe4DoBYoitU+lLI6DrTu18ChGAn9Xu3g8+Kd0NeRO1yuTWb4k4PdtnFrA4XNKOihEuxekq0kxz2zCVFkMWTo3PsfmQCMDYNKHLhFjLaiEneuBMbE0BZqk/xzloTez7O7uNwqPeKf5zx2RgMVpL0Up7oRLro4Wod1Vb+llE18ADm8jsN9xw1ODfheSRXUIVBM+3/onjxCmfwhNsEc9DMoVbjvF0QYzGWwaNpju/Uxpz29XvIqvdlOx6F5e66GLyBfIgthOuZqTHhCDqwIa+//zRLafq+eXAPA8N5C4BrTPSa88dGJ5GDe29qiRrfszyP3z0a45bzdu08H7zF3gUp74frQCWF8nvwMPvBY3qzZ481lNxBRBg+DJt2qUSVSaXI4Y0Czklg105Oe8caKh8oQZG9/Tw+kvUmRmUV5M1+Vm0b/OJpTiOi9H22No=
