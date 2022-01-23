@@ -36,13 +36,24 @@ fn get_text_input(explanation: &str) -> Option<String> {
 #[tokio::main]
 async fn main() {
     let cli = Cli::parse();
-    let select_assignee: bool = cli.assignee;
+    // let select_assignee: bool = cli.assignee;
 
     match &cli.command {
         Some(SubCommands::Issues) => {
             let issues = jira::api::list().await.expect("failed get_Issues").issues;
-            let issue = jira::utils::select_issue(&issues);
-            println!("issue: {}", issue.fields.summary);
+
+            let selected_issues = jira::utils::select_issues(&issues);
+            
+            let base_url = jira::api::generate_base_url().unwrap();
+            let issue_links: Vec<String> = selected_issues
+              .iter()
+              .map(|issue| format!("- [[{}][{}] {}]({}/browse/{})", issue.fields.issuetype.name, issue.fields.assignee.display_name, issue.fields.summary, base_url, issue.key))
+              .collect();
+            
+            let output = issue_links.join("\n");
+
+            println!("{}", output);
+            // sh::copy_to_clip(&output);
         },
         Some(SubCommands::Commit) => {
             let issues = jira::api::list().await.expect("failed get_Issues").issues;

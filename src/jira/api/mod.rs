@@ -26,6 +26,28 @@ pub struct Issue {
 #[serde(rename_all = "camelCase")]
 pub struct IssueFields {
     pub summary: String,
+    pub assignee: Assignee,
+    pub issuetype: IssueType,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Assignee {
+    pub display_name: String,
+    pub account_id: String,
+    pub email_address: String,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct IssueType {
+  pub id: String,
+  pub description: String,
+  pub icon_url: String,
+  pub name: String,
+  pub subtask: bool,
+  pub avatar_id: i32,
+  pub hierarchy_level: i32,
 }
 
 // =========
@@ -74,7 +96,7 @@ fn generate_basic_auth() -> Result<String, Box<dyn Error>> {
   return Ok(authorization);
 }
 
-fn generate_base_url() -> Result<reqwest::Url, Box<dyn Error>> {
+pub fn generate_base_url() -> Result<reqwest::Url, Box<dyn Error>> {
   let jira_base_url = env::var("JIRA_BASE_URL").unwrap();
   let base = reqwest::Url::parse(&jira_base_url).unwrap();
   return Ok(base);
