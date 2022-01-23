@@ -6,7 +6,7 @@ script: cargo build --verbose --release; cargo test --verbose
 matrix:
   fast_finish: true
 os:
-  # - windows
+  - windows
   - osx
 before_deploy:
   - 'if [[ -f target/release/j ]]; then mv target/release/j "target/release/j-$TRAVIS_TAG-$TRAVIS_OS_NAME"; fi'
