@@ -1,11 +1,11 @@
 use std::process::Command;
 
 pub fn git_commit(message: &str) {
-  let runningCommand = format!("git commit -m \"{}\"", message);
-  println!("{}", runningCommand);
+let running_command = format!("git commit -m \"{}\"", message.trim());
+  println!("{}", running_command);
   Command::new("sh")
     .arg("-c")
-    .arg(runningCommand)
+    .arg(running_command)
     .output()
     .expect("failed to commit");
 }
