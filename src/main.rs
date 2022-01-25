@@ -61,12 +61,16 @@ async fn main() {
 
             let default_commit_message = &issue.fields.summary;
             let explanation = format!("Enter commit message. (default={})", default_commit_message.yellow());
-            let user_input = get_text_input(&explanation);
+            let user_input = get_text_input(&explanation).expect("jjj");
+            let trimed_userinput = user_input.trim();
             
-            match user_input {
-                Some(input) => sh::git_commit(&format!("{} {}", issue.key, &input)),
-                None => sh::git_commit(&format!("{} {}", issue.key, default_commit_message)),
-            }
+            let commit_message = if trimed_userinput.is_empty() {
+                format!("{} {}", issue.key, default_commit_message)
+            } else {
+                format!("{} {}", issue.key, trimed_userinput)
+            };
+
+            sh::git_commit(&commit_message);
         },
         None => {
             println!("enter `j -h` for help");

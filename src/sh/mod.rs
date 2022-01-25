@@ -6,14 +6,6 @@ pub fn git_commit(message: &str) {
     Command::new("sh")
       .arg("-c")
       .arg(running_command)
-      .output()
+      .spawn()
       .expect("failed to commit");
 }
-
-// pub fn copy_to_clip(s: &str) {
-//     Command::new("sh")
-//       .arg("-c")
-//       .arg(format!("echo {} | pbcopy", s))
-//       .output()
-//       .expect("failed to commit");
-// }
