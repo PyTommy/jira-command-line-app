@@ -29,6 +29,7 @@ pub struct IssueFields {
     pub summary: String,
     pub assignee: Assignee,
     pub issuetype: IssueType,
+    pub fix_versions: Option<Vec<FixVersion>>
 }
 
 #[derive(Serialize, Deserialize)]
@@ -51,6 +52,16 @@ pub struct IssueType {
   pub hierarchy_level: i32,
 }
 
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FixVersion {
+      id: String,
+      description: String,
+      name: String,
+      archived: bool,
+      released: bool,
+}
+
 // =========
 // Public
 // =========
@@ -71,6 +82,7 @@ pub async fn list() -> Result<SearchIssuesResult, Box<dyn Error>> {
     .await.expect("failed to request")
     .text()
     .await.expect("failed to deserialize");
+  println!("{}", result);
 
   let body: SearchIssuesResult = serde_json::from_str(&result).expect("failed!!");
   Ok(body)
